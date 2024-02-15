@@ -1,0 +1,94 @@
+{% extends "base_farmer.html" %}
+{% block content %}
+    <div class="container p-2 rounded shadow-lg text-center fixed-length" style="max-width: 350px;">
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+            <div id="non-field-errors" class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ error }}
+              <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+        {% endif %}
+        <h2 class="text-center">Edit History</h2>
+        <form action="{% url 'farmer:edit_farmer_history' history_entry.id %}" method="post">
+            {% csrf_token %}
+            <div class="form-group {% if form.season.errors %}has-error{% endif %} mb-2">
+                {{ form.season.label_tag }}
+                {{ form.season }}
+                {% if form.season.errors %}
+                    <div class="text-danger">
+                        {% for error in form.season.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group {% if form.year.errors %}has-error{% endif %} mb-2">
+                {{ form.year.label_tag }}
+                {{ form.year }}
+                {% if form.year.errors %}
+                    <div class="text-danger">
+                        {% for error in form.year.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group {% if form.crop.errors %}has-error{% endif %} mb-2">
+                {{ form.crop.label_tag }}
+                {{ form.crop }}
+                {% if form.crop.errors %}
+                    <div class="text-danger">
+                        {% for error in form.crop.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group {% if form.area_cultivated.errors %}has-error{% endif %} mb-2">
+                {{ form.area_cultivated.label_tag }}
+                {{ form.area_cultivated }}
+                {% if form.area_cultivated.errors %}
+                    <div class="text-danger">
+                        {% for error in form.area_cultivated.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group {% if form.revenue.errors %}has-error{% endif %} mb-2">
+                {{ form.revenue.label_tag }}
+                {{ form.revenue }}
+                {% if form.revenue.errors %}
+                    <div class="text-danger">
+                        {% for error in form.revenue.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div class="form-group {% if form.expenses.errors %}has-error{% endif %} mb-2">
+                {{ form.expenses.label_tag }}
+                {{ form.expenses }}
+                {% if form.expenses.errors %}
+                    <div class="text-danger">
+                        {% for error in form.expenses.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <!-- Add other fields as needed -->
+        
+            <button type="submit" class="btn btn-primary btn-block">Update</button>
+        </form>        
+    </div>
+{% endblock %}

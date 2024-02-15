@@ -1,0 +1,34 @@
+<!-- registration/register_common.html -->
+<form method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    {{ common_form.as_p }}
+    <div id="farmer-form" style="display: none;">
+      {{ farmer_form.as_p }}
+    </div>
+    <div id="investor-form" style="display: none;">
+      {{ investor_form.as_p }}
+    </div>
+    <button type="submit">Register</button>
+  </form>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const userTypeField = document.querySelector('#id_user_type');
+    const farmerForm = document.querySelector('#farmer-form');
+    const investorForm = document.querySelector('#investor-form');
+  
+    userTypeField.addEventListener('change', function() {
+      if (userTypeField.value === 'F') {
+        farmerForm.style.display = 'block';
+        investorForm.style.display = 'none';
+      } else if (userTypeField.value === 'I') {
+        farmerForm.style.display = 'none';
+        investorForm.style.display = 'block';
+      } else {
+        farmerForm.style.display = 'none';
+        investorForm.style.display = 'none';
+      }
+    });
+  });
+  </script>
+  

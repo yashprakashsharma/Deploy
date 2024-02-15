@@ -1,0 +1,78 @@
+{% extends "base_farmer.html" %}
+{% block content %}
+  <!-- <div class="container d-flex flex-column align-items-center justify-content-center">
+    {{ user.first_name }} {{ user.last_name }}  <br>
+    Aadhar Number: {{ farmer.aadhar_number }}  <br>
+    PAN Number: {{ farmer.pan_number }}
+    <br>
+    Land Area: {{ farmer.land_area }}
+  </div> -->
+  <div class="container mt-5 rounded shadow-lg text-center fixed-length">
+
+    {% if farmer.is_rejected%}
+        <div class="alert alert-danger mt-3 mb-2 text-center" role="alert">
+            Your Profile got rejected! Reason: {{ farmer.rejection_reason }}
+         </div>
+         <div class="text-center">
+              <a href="{% url 'farmer:edit_farmer'%}" class="btn btn-warning mt-1">Update Profile</a>
+         </div>
+    {% endif %}
+
+    <div class="row p-3 mt-3">
+        <div class="col-md-6 mx-auto card shadow-lg">
+            <h1 class="text-center">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</h1>
+            <p class="text-center"><b>UserName:</b> {{ user.username }}</p>
+            <p class="text-center"><b>Email:</b> {{ user.email }}</p>
+            <p class="text-center"><b>Contact No:</b> {{ user.phone }}</p>
+            <p class="text-center"><b>Aadhar No:</b> {{ farmer.aadhar_number }}</p>
+            <p class="text-center"><b>PAN No:</b> {{ farmer.pan_number }}</p>
+            <p class="text-center"><b>Land Area:</b> {{ farmer.land_area }} sq. meters</p>
+            <p class="text-center"><b>Documents:</b> <a href="{{farmer.documents.url}}" target="_blank">view documents</a></p>
+        </div>
+    </div>
+
+    <!-- Add button to add FarmerHistory entry -->
+    <div class="row mt-3 mb-3">
+        <div class="col-md-6 mx-auto">
+            <a class="btn btn-success btn-lg btn-block" href="{% url 'farmer:add_farmer_history' %}">Add Farmer History Entry</a>
+        </div>
+    </div>
+
+    <!-- Display FarmerHistory entries in a table with Edit buttons -->
+    {% if farmer.farmerhistory_set.all %}
+    <div class="row mt-3">
+        <div class="col-md-8 mx-auto">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Season</th>
+                        <th>Year</th>
+                        <th>Crop</th>
+                        <th>Area Cultivated(sq. meters)</th>
+                        <th>Revenue(&#8377;)</th>
+                        <th>Expenses(&#8377;)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for history_entry in farmer.farmerhistory_set.all %}
+                        <tr>
+                            <td>{{ history_entry.season }}</td>
+                            <td>{{ history_entry.year }}</td>
+                            <td>{{ history_entry.crop }}</td>
+                            <td>{{ history_entry.area_cultivated }}</td>
+                            <td>{{ history_entry.revenue }}</td>
+                            <td>{{ history_entry.expenses }}</td>
+                            <td>
+                                <a class="btn btn-warning btn-sm" href="{% url 'farmer:edit_farmer_history' history_entry.id %}">Edit</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

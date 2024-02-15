@@ -1,0 +1,90 @@
+{% extends "base_investor.html" %}
+{% block content %}
+    <div class="container rounded shadow-lg text-center fixed-length" style="max-width: 350px;">
+        {% if form.non_field_errors %}
+            <div id="non-field-errors" class="alert alert-danger alert-dismissible fade show" role="alert">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+
+        <h2 class="text-center">Buy ICO</h2>
+        <input type="hidden" id="ico_price" value="{{ ico_entity.price }}">
+        <input type="hidden" id="total-cost" name="total_cost" value="">
+        <p style="color: green;">Cost: <span id="place_it">0.00</span> Rs</p>
+        
+        <form method="post" action="{% url 'investor:buy_ico' ico_entity.id %}">
+            {% csrf_token %}
+            
+            <div class="form-group {% if form.quantity.errors %}has-error{% endif %} mb-2">
+                <label for="{{ form.quantity.id_for_label }}">Quantity:</label>
+                {{ form.quantity }}
+                {% if form.quantity.errors %}
+                    <div class="text-danger">
+                        {% for error in form.quantity.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <!-- Add other fields as needed -->
+        
+            <button type="submit" class="btn btn-primary btn-block mb-2">Buy ICO</button>
+        </form>        
+    </div>
+
+<script>
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     const quantityInput = document.getElementById('id_quantity');
+    
+//     if (quantityInput !== null) {
+//         quantityInput.addEventListener('keyup', () => calculateTotalCost());
+//         quantityInput.addEventListener('load', () => calculateTotalCost());
+//         function calculateTotalCost() {
+//             let quantity = Number(document.getElementById('id_quantity').value);
+//             let icoPrice = parseFloat(document.getElementById('ico_price').value);
+//             // console.log('price', icoPrice, quantity);
+//             let totalCost = quantity * icoPrice;
+
+//             // console.log(totalCost);
+//             // Update the total cost display
+//             let formattedTotalCost = totalCost.toFixed(2);
+//             document.getElementById('place_it').textContent = formattedTotalCost;
+//         }
+//     } else {
+//         console.error('Quantity input field not found');
+//     }
+// });
+
+window.addEventListener('load', () => {
+    const quantityInput = document.getElementById('id_quantity');
+    const icoPriceElement = document.getElementById('ico_price');
+    const totalCostDisplay = document.getElementById('place_it');
+
+    if (quantityInput && icoPriceElement && totalCostDisplay) {
+        // Attach a single 'keyup' event listener:
+        quantityInput.addEventListener('keyup', calculateTotalCost);
+
+        // Trigger calculation on initial load:
+        calculateTotalCost();
+
+        function calculateTotalCost() {
+            const quantity = Number(quantityInput.value);
+            const icoPrice = parseFloat(icoPriceElement.value);
+            const totalCost = quantity * icoPrice;
+            const formattedTotalCost = totalCost.toFixed(2);
+
+            totalCostDisplay.textContent = formattedTotalCost;
+        }
+    } else {
+        console.error('One or more required elements not found');
+    }
+});
+</script>
+{% endblock %}

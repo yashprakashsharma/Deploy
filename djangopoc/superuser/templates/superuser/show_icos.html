@@ -1,0 +1,79 @@
+{% extends "base_superuser.html" %}
+{% block content %}
+  <div class="container mt-3">
+    <form method="get" action="{% url 'superuser:show_icos' %}" class="mb-4">
+        <div class="row">
+          <div class="col-md-8">
+            <!-- <label for="filter" class="form-label">Filter by:</label> -->
+            <select name="filter" id="filter" class="form-select">
+                <option value="all" {% if filter_type == 'all' %}selected{% endif %}>All</option>
+                <option value="not_verified" {% if filter_type == 'not_verified' %}selected{% endif %}>For Verification</option>
+                <option value="defaulter" {% if filter_type == 'defaulter' %}selected{% endif %}>Defaulter</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-secondary">Apply Filter</button>
+          </div>
+        </div>
+      </form>
+    {% if icos %}
+    {% for ico in icos %}
+      <div class="card mb-4">
+        <div class="row ">
+            <div class="col-md-4">
+                <img src="https://images.unsplash.com/photo-1564417947365-8dbc9d0e718e?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y3JvcHxlbnwwfHwwfHx8MA%3D%3D" class="card-img-top" alt="crop" style="width: px; height: 200px; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h4 class="card-title">{{ ico.crop }}</h4>
+                    <div class="row">
+                        <div class="col-md-6 card-text">
+                            <strong>Farmer Name: </strong>{{ ico.farmer.user.first_name }}<br>
+                            <strong>Capital: </strong>{{ ico.capital|floatformat:2 }} &#8377;<br>
+                            <strong>Quantity: </strong>{{ ico.quantity }}
+                        </div>
+                        <div class="col-md-6 card-text">
+                            <strong>Closes On: </strong>{{ ico.closes_on|date:"Y-m-d" }}<br>
+                            <strong>Return Date: </strong>{{ ico.return_date|date:"Y-m-d" }} 
+                            <!-- Add more attributes here -->
+                        </div>
+                    </div>
+                    <!-- <a href="#" class="btn btn-primary mt-3">Show Details</a> -->
+                    <!-- Pass the ICO details directly to the details template using the URL -->
+                    <div class="row">
+                        <div class="col-md-6"><a href="{% url 'superuser:ico_details' ico.id %}" class="btn btn-success mt-3">Show Details</a></div>
+                        {% if ico.isVerified == False and ico.is_rejected == False %}
+                        <div class="col-md-6"><a href="{% url 'superuser:approve_ico' ico.id %}" class="btn btn-warning mt-3">Approve ICO</a></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+    {% endfor %}
+    <!-- Pagination links -->
+    <div class="pagination mt-3" style="justify-content: center;">
+        <span class="step-links">
+          {% if icos.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ icos.previous_page_number }}">previous</a>
+          {% endif %}
+  
+          <span class="current">
+            Page {{ icos.number }} of {{ icos.paginator.num_pages }}.
+          </span>
+  
+          {% if icos.has_next %}
+            <a href="?page={{ icos.next_page_number }}">next</a>
+            <a href="?page={{ icos.paginator.num_pages }}">last &raquo;</a>
+          {% endif %}
+        </span>
+      </div>
+    {% else %}
+        <div class="alert alert-info mt-3 text-center" role="alert">
+            There are No such ICOs present at the moment!
+        </div>
+    {% endif %}
+  </div>
+{% endblock %}
+

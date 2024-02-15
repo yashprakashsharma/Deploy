@@ -1,0 +1,35 @@
+{% extends "base_farmer.html" %}
+{% block content %}
+  <div class="container text-center mt-3 mb-2 p-4 rounded shadow-lg fixed-length">
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+        <div id="non-field-errors" class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ error }}
+          <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
+    {% endif %}
+    <h2>Transfer Investors Return</h2>
+    <form method="post" action="">
+      {% csrf_token %}
+      <!-- {{ form.non_field_errors }}
+      {{ form.revenue.errors }}
+      {{ form.as_p }} -->
+      <div class="form-group {% if form.revenue.errors %}has-error{% endif %} mb-2">
+        {{ form.revenue.label_tag }}
+        {{ form.revenue }}
+        {% if form.revenue.errors %}
+          <div class="text-danger">
+            {% for error in form.revenue.errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="btn btn-primary">Transfer Returns</button>
+    </form>
+  </div>
+{% endblock %}

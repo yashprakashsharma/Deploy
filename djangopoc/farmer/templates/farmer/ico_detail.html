@@ -1,0 +1,49 @@
+{% extends "base_farmer.html" %}
+{% block content %}
+  <div class="container mt-5 mb-2 p-4 rounded shadow-lg fixed-length">
+
+    <h2>ICO Entity Details</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Crop:</strong> {{ ico.crop }}</p>
+            <p><strong>Land Area:</strong> {{ ico.land_area }} sq. meters</p>
+            <p><strong>Capital:</strong> {{ ico.capital }} Rs</p>
+            <p><strong>Quantity:</strong> {{ ico.quantity }}</p>
+            <p><strong>Status:</strong> {{ ico.status }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Sold Quantity:</strong> {{ ico.sold_quantity }}</p>
+            <p><strong>Created At:</strong> {{ ico.created_at|date:"Y-m-d" }}</p>
+            <p><strong>Closes On:</strong> {{ ico.closes_on|date:"Y-m-d" }}</p>
+            <p><strong>Return Date:</strong> {{ ico.return_date|date:"Y-m-d" }}</p>
+            <p><strong>Verified:</strong> {{ ico.isVerified }}</p>
+        </div>
+    </div>
+
+    {% if ico.is_rejected %}
+      <div class="alert alert-danger mt-3 mb-2 text-center" role="alert">
+        <div class="d-flex flex-column align-items-center">
+          Your ICO got rejected! Due to following Reason: <span class="text-break">{{ ico.rejection_reason }}</span>
+         </div>
+        <!-- Your ICO got rejected! Reason: {{ ico.rejection_reason }} -->
+     </div>
+     <div class="text-center">
+          <a href="{% url 'farmer:edit_ico_entity' ico.id %}" class="btn btn-warning mt-1">Edit ICO</a>
+     </div>
+    {% endif %}
+
+    {% if ico.open_return %}
+    <div class="text-center">
+      <a href="{% url 'farmer:ico_returns' ico.id %}" class="btn btn-warning mt-1">Transfer Returns</a>
+    </div>
+    {% endif %}
+
+    {% if ico.status == "Closed" and ico.is_return_provided == True %}
+    <div class="alert alert-success mt-3 text-center" role="alert">
+        Hurray! You successfully closed the ICO and transferred investors share to them.
+    </div>
+    {% endif %}
+
+  </div>
+{% endblock %}

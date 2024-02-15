@@ -1,0 +1,55 @@
+{% extends "base_superuser.html" %}
+{% block content %}
+  <div class="container d-flex flex-column justify-content-center">
+    <h1 class="text-center">Welcome to Initial Crop Offering, {{ user.first_name }}!</h1>
+    <div class="row row-cols-1 row-cols-md-3 mt-5 mb-2 text-center">
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm border-warning">
+            <div class="card-header py-3 text-white bg-success border-warning">
+              <h4 class="my-0 fw-normal">ICOs</h4>
+            </div>
+            <div class="card-body">
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>ICO's created by </li>
+                <li>Farmers are verified</li>
+                <li>from here</li>
+              </ul>
+              <!-- <button type="button" class="w-100 btn btn-lg btn-warning">Verify ICOs</button> -->
+              <a href="{% url 'superuser:show_icos' %}" class="w-100 btn btn-lg btn-primary">Show ICOs</a>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm border-warning">
+            <div class="card-header py-3 text-white bg-success border-warning">
+              <h4 class="my-0 fw-normal">Farmers</h4>
+            </div>
+            <div class="card-body">
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>Farmers registered for</li>
+                <li>Capital are verified</li>
+                <li>from here</li>
+              </ul>
+              <a href="{% url 'superuser:show_farmers' %}" class="w-100 btn btn-lg btn-primary">Show Farmers</a>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm border-warning">
+            <div class="card-header py-3 text-white bg-success border-warning">
+              <h4 class="my-0 fw-normal">Investors</h4>
+            </div>
+            <div class="card-body">
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>Investors registerd for</li>
+                <li>Investing are verified</li>
+                <li>from here</li>
+              </ul>
+              <a href="{% url 'superuser:show_investors' %}" class="w-100 btn btn-lg btn-primary">Show Investors</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+{% endblock %}

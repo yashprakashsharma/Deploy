@@ -1,0 +1,34 @@
+{% extends "base_investor.html" %}
+{% block content %}
+  <div class="container mt-5 p-2 rounded shadow-lg text-center fixed-length">
+
+    <div class="row mt-3">
+        <div class="col-md-6 mx-auto card shadow-lg">
+            <h1 class="text-center">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</h1>
+            <p class="text-center"><b>UserName:</b> {{ user.username }}</p>
+            <p class="text-center"><b>Email:</b> {{ user.email }}</p>
+            <p class="text-center"><b>Contact No:</b> {{ user.phone }}</p>
+            <p class="text-center"><b>Aadhar No:</b> {{ investor.aadhar_number }}</p>
+            <p class="text-center"><b>PAN No:</b> {{ investor.pan_number }}</p>
+            <p class="text-center"><b>Documents:</b> <a href="{{investor.documents.url}}" target="_blank">view documents</a></p>
+        </div>
+    </div>
+
+    {% if investor.is_rejected%}
+        <div class="alert alert-danger mt-3 mb-2 text-center" role="alert">
+            Your Profile got rejected! Reason: {{ investor.rejection_reason }}
+         </div>
+         <div class="text-center">
+              <a href="{% url 'investor:edit_investor'%}" class="btn btn-warning mt-1">Update Profile</a>
+         </div>
+    {% endif %}
+
+    
+    <!-- <div class="row mt-3">
+        <div class="col-md-6 mx-auto">
+            <a class="btn btn-danger btn-lg btn-block" href="/update-student/{{ student.id }}">Update Profile</a>
+        </div>
+    </div> -->
+</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<div class="container" style="max-width: 400px;">
+    <div class="card custom-light-green-bg">
+        <div class="card-body">
+            {% if messages %}
+            <div class="alert alert-warning" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+        
+            <form action="" method='POST'>
+                {% csrf_token %}
+                <h3><strong>Resend OTP</strong></h3>
+                <div class="mb-3">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" name="otp_email" placeholder="Enter email-address">
+                  </div>
+              
+                  <button class="btn btn-primary" style="width:100%">Send OTP</button>
+                  {% comment %} <p>Need a new OTP? <a href="">Resend OTP</a></p> {% endcomment %}
+              
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+    

@@ -1,0 +1,142 @@
+{% extends "base_farmer.html" %}
+
+{% block content %}
+    <div class="container rounded shadow-lg text-center fixed-length" style="max-width: 350px;">
+        {% if form.non_field_errors %}
+          {% for error in form.non_field_errors %}
+            <div id="non-field-errors" class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ error }}
+              <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        <h2 class="text-center">Edit ICO</h2>
+        <form action="{% url 'farmer:edit_ico_entity' ico_entity.id %}" method="post">
+            {% csrf_token %}
+
+            <div class="form-group {% if form.crop.errors %}has-error{% endif %} mb-2">
+                {{ form.crop.label_tag }}
+                {{ form.crop }}
+                {% if form.crop.errors %}
+                    <div class="text-danger">
+                        {% for error in form.crop.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group {% if form.land_area.errors %}has-error{% endif %} mb-2">
+                {{ form.land_area.label_tag }}
+                {{ form.land_area }}
+                {% if form.land_area.errors %}
+                    <div class="text-danger">
+                        {% for error in form.land_area.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group {% if form.capital.errors %}has-error{% endif %} mb-2">
+                {{ form.capital.label_tag }}
+                {{ form.capital }}
+                {% if form.capital.errors %}
+                    <div class="text-danger">
+                        {% for error in form.capital.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group {% if form.quantity.errors %}has-error{% endif %} mb-2">
+                {{ form.quantity.label_tag }}
+                {{ form.quantity }}
+                {% if form.quantity.errors %}
+                    <div class="text-danger">
+                        {% for error in form.quantity.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- <div class="form-group {% if form.closes_on.errors %}has-error{% endif %} mb-2">
+                {{ form.closes_on.label_tag }}
+                {{ form.closes_on }}
+                {% if form.closes_on.errors %}
+                    <div class="text-danger">
+                        {% for error in form.closes_on.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group {% if form.return_date.errors %}has-error{% endif %} mb-2">
+                {{ form.return_date.label_tag }}
+                {{ form.return_date }}
+                {% if form.return_date.errors %}
+                    <div class="text-danger">
+                        {% for error in form.return_date.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div> -->
+
+            <div class="form-group {% if form.closes_on.errors %}has-error{% endif %} mb-2">
+                {{ form.closes_on.label_tag }}
+                <input type="date" class="form-control" id="id_closes_on" name="closes_on" value="{{ form.closes_on.value|date:'Y-m-d' }}">
+                {% if form.closes_on.errors %}
+                    <div class="text-danger">
+                        {% for error in form.closes_on.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group {% if form.return_date.errors %}has-error{% endif %} mb-2">
+                {{ form.return_date.label_tag }}
+                <input type="date" class="form-control" id="id_return_date" name="return_date" value="{{ form.return_date.value|date:'Y-m-d' }}">
+                {% if form.return_date.errors %}
+                    <div class="text-danger">
+                        {% for error in form.return_date.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Add other fields as needed -->
+
+            <button type="submit" class="btn btn-success btn-block">Update</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var today = new Date();
+            var minDate = new Date(today);
+            var maxDate = new Date(today);
+            minDate.setDate(today.getDate()+10); // 10 days in future
+            maxDate.setDate(today.getDate() + 20);  // 20 days in the future
+    
+            var closesOnInput = document.querySelector('#id_closes_on');
+            closesOnInput.min = minDate.toISOString().split('T')[0];  // Set min attribute
+            closesOnInput.max = maxDate.toISOString().split('T')[0];  // Set max attribute
+    
+            var minDate2 = new Date(today);
+            var maxDate2 = new Date(today);
+            minDate2.setDate(today.getDate()+90); // 90 days in future
+            maxDate2.setDate(today.getDate() + 120);  // 120 days in the future
+            var closesOnInput2 = document.querySelector('#id_return_date');
+            closesOnInput2.min = minDate2.toISOString().split('T')[0];  // Set min attribute
+            closesOnInput2.max = maxDate2.toISOString().split('T')[0];  // Set max attribute
+        });
+    </script>
+{% endblock %}

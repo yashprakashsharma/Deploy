@@ -1,0 +1,77 @@
+{% extends "base_superuser.html" %}
+{% block content %}
+  <div class="container mt-3">
+    <form method="get" action="{% url 'superuser:show_investors' %}" class="mb-4">
+        <div class="row">
+          <div class="col-md-8">
+            <!-- <label for="filter" class="form-label">Filter by:</label> -->
+            <select name="filter" id="filter" class="form-select">
+                <option value="all" {% if filter_type == 'all' %}selected{% endif %}>All</option>
+                <option value="not_verified" {% if filter_type == 'not_verified' %}selected{% endif %}>For Verification</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-secondary">Apply Filter</button>
+          </div>
+        </div>
+      </form>
+    {% if investors %}
+    {% for investor in investors %}
+      <div class="card mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW52ZXN0b3JzfGVufDB8fDB8fHww" class="card-img-top" alt="crop" style="width: px; height: 200px; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h4 class="card-title">{{ investor.user.first_name }}</h4>
+                    <div class="row">
+                        <div class="col-md-6 card-text">
+                            <strong>Aadhar No: </strong>{{ investor.aadhar_number }}<br>
+                            <strong>PAN No: </strong>{{ investor.pan_number }}<br> 
+                            <strong>Email: </strong>{{ investor.user.email }}
+                        </div>
+                        <div class="col-md-6 card-text">
+                            <strong>UserName: </strong>{{ investor.user.username }}<br>
+                            <strong>Contact: </strong>{{ investor.user.phone }}
+                        </div>
+                    </div>
+                    <!-- <a href="#" class="btn btn-primary mt-3">Show Details</a> -->
+                    <!-- Pass the ICO details directly to the details template using the URL -->
+                    <div class="row">
+                        <div class="col-md-6"><a href="{% url 'superuser:investor_details' investor.user.id %}" class="btn btn-success mt-3">Show Details</a></div>
+                        {% if investor.is_verified == False and investor.is_rejected == False %}
+                            <div class="col-md-6"><a href="{% url 'superuser:approve_investor' investor.user.id %}" class="btn btn-warning mt-3">Approve Investor</a></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+    {% endfor %}
+    <!-- Pagination links -->
+    <div class="pagination mt-3" style="justify-content: center;">
+        <span class="step-links">
+            {% if investors.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ investors.previous_page_number }}">previous</a>
+            {% endif %}
+        
+            <span class="current">
+                Page {{ investors.number }} of {{ investors.paginator.num_pages }}.
+            </span>
+        
+            {% if investors.has_next %}
+                <a href="?page={{ investors.next_page_number }}">next</a>
+                <a href="?page={{ investors.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+        <div class="alert alert-info mt-3 text-center" role="alert">
+            There are No Investors present for Approval!
+        </div>
+    {% endif %}
+  </div>
+{% endblock %}
+

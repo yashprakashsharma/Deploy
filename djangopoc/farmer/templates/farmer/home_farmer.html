@@ -1,0 +1,15 @@
+{% extends "base_farmer.html" %}
+{% block content %}
+<div class="container-fluid p-0">
+  <div class="bg-image" style="background-image: url('https://images.unsplash.com/photo-1560493676-04071c5f467b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZmFybXxlbnwwfHwwfHx8MA%3D%3D'); height: 83vh; background-size: cover; background-position: center;">
+  <div class="container p-5 d-flex flex-column align-items-center justify-content-center">
+    <h1>Welcome to Initial Crop Offering, {{ user.first_name }}!</h1>
+    <p class="lead">Connecting Farmers with Investors for a better tomorrow.</p>
+    <p class="lead">
+      <a href="{% url 'farmer:add_ico_entity' %}" class="btn btn-success">Get Investment</a>
+    </p>
+  </div>
+  </div>
+  <div>
+
+{% endblock %}

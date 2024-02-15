@@ -1,0 +1,87 @@
+{% extends "base_investor.html" %}
+{% block content %}
+    <div class="container">
+        <!-- <h2>ICOs for {{ investor.user.username }}</h2> -->
+        <form method="get" action="{% url 'investor:investor_icos' %}" class="mb-4">
+            <div class="row">
+              <div class="col-md-8">
+                <!-- <label for="filter" class="form-label">Filter by:</label> -->
+                <select name="filter" id="filter" class="form-select">
+                  <option value="all" {% if filter_type == 'all' %}selected{% endif %}>All</option>
+                  <option value="open" {% if filter_type == 'open' %}selected{% endif %}>Open</option>
+                  <option value="closed" {% if filter_type == 'closed' %}selected{% endif %}>Closed</option>
+                  <option value="pending" {% if filter_type == 'pending' %}selected{% endif %}>Pending</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <button type="submit" class="btn btn-secondary">Apply Filter</button>
+              </div>
+            </div>
+          </form>
+
+        {% if transactions %}
+                {% for transaction in transactions %}
+                    <!-- <tr>
+                        <td>{{ transaction.pk }}</td>
+                        <td>{{ transaction.ico.crop }}</td>
+                        <td>{{ transaction.quantity }}</td>
+                        <td>{{ transaction.per_entity_cost }}</td>
+                        <td>{{ transaction.updated_at }}</td>
+                    </tr> -->
+                    <div class="card mb-3">
+                        <div class="row ">
+                            <div class="col-md-4">
+                                <img src="https://images.unsplash.com/photo-1564417947365-8dbc9d0e718e?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y3JvcHxlbnwwfHwwfHx8MA%3D%3D" class="card-img-top" alt="crop" style="width: px; height: 200px; object-fit: cover;">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{ transaction.ico.crop }}</h4>
+                                    <div class="row">
+                                        <div class="col-md-6 card-text">
+                                            <strong>Quantity: </strong>{{ transaction.quantity }}<br>
+                                            <strong>Price: </strong>{{ transaction.per_entity_cost }} Rs<br>
+                                            <strong>Status: </strong>{{ transaction.ico.status }}
+                                        </div>
+                                        <div class="col-md-6 card-text">
+                                            <strong>Farmer Name: </strong>{{ transaction.ico.farmer.user.first_name }}<br>
+                                            <strong>Return Date: </strong>{{ transaction.ico.return_date|date:"Y-m-d" }} 
+                                            <!-- Add more attributes here -->
+                                        </div>
+                                    </div>
+                                    <!-- <a href="#" class="btn btn-primary mt-3">Show Details</a> -->
+                                    <div class="row">
+                                        <div class="col-md-6"><a href="{% url 'investor:ico_details' transaction.ico.id %}" class="btn btn-success mt-3">Show Details</a></div>
+                                        {% if transaction.ico.status == "Open" and transaction.ico.stock_available > 0 %}
+                                            <div class="col-md-6"><a href="{% url 'investor:buy_ico' transaction.ico.id %}" class="btn btn-warning mt-3">Buy More</a></div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </div>
+                {% endfor %}
+                <!-- Pagination links -->
+                <div class="pagination mt-3" style="justify-content: center;">
+                    <span class="step-links">
+                        {% if transactions.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ transactions.previous_page_number }}">previous</a>
+                        {% endif %}
+                    
+                        <span class="current">
+                            Page {{ transactions.number }} of {{ transactions.paginator.num_pages }}.
+                        </span>
+                    
+                        {% if transactions.has_next %}
+                            <a href="?page={{ transactions.next_page_number }}">next</a>
+                            <a href="?page={{ transactions.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+        {% else %}
+            <div class="alert alert-info mt-3 text-center" role="alert">
+                No ICOs found for {{ investor.user.username }}!
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

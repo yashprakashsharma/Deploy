@@ -1,0 +1,17 @@
+{% extends "base_superuser.html" %}
+{% block content %}
+  <div class="container mt-5 rounded shadow-lg text-center fixed-length">
+
+    <div class="row mt-3">
+        <div class="col-md-6 mx-auto card shadow-lg">
+            <h1 class="text-center">{{ user.first_name|capfirst }} {{ user.last_name|capfirst }}</h1>
+            <p class="text-center"><b>UserName:</b> {{ user.username }}</p>
+            <p class="text-center"><b>Email:</b> {{ user.email }}</p>
+            <p class="text-center"><b>Contact No:</b> {{ user.phone }}</p>
+            <!-- <a href="http://127.0.0.1:8000/admin/">Full Acess</a> -->
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

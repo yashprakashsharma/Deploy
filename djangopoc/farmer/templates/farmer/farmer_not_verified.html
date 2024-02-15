@@ -1,0 +1,12 @@
+{% extends "base_farmer.html" %}
+{% block content %}
+  <!-- Account Verification Message -->
+  <div class="container mt-5">
+    <div class="alert alert-danger">
+      <h2 class="text-center mt-2 mb-2">Hi {{ user.first_name }}! Your account is not verified yet.</h2>
+      <h3 class="text-center mt-4 mb-2">Please wait for it to get verified.</h3>
+      <p class="text-center mt-5">In general, your newly registered account gets verified within 2 days. If it doesn't, please contact us at: <a href="mailto:yashprakashsharma2000@mail.com">email</a></p>
+    </div>
+  </div>
+
+{% endblock %}

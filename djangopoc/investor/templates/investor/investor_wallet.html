@@ -1,0 +1,15 @@
+{% extends "base_investor.html" %}
+{% block content %}
+<div class="container">
+    <div class="card shadow-lg mx-auto" style="max-width: 350px;">
+        <!-- <img src="https://media.gettyimages.com/id/912819642/vector/wallet-flat-design-e-commerce-icon.jpg?s=612x612&w=0&k=20&c=jUT9SJ5wZF1ULax2Gk_s_3GZZAYvCm9SBfHahoaZUg4=" alt="Logo" class="card-img-top"> -->
+        <div class="card-body text-center">
+            <!-- <h5 class="card-title display-3">Wallet</h5> -->
+            <h2 class="card-title">Wallet</h2>
+            <img src="https://media.gettyimages.com/id/912819642/vector/wallet-flat-design-e-commerce-icon.jpg?s=612x612&w=0&k=20&c=jUT9SJ5wZF1ULax2Gk_s_3GZZAYvCm9SBfHahoaZUg4=" alt="Logo" class="img-fluid rounded-circle">
+            <p class="card-text lead">Your wallet balance is &#8377;{{ wallet.balance|floatformat:2 }}</p>
+            <p><a class="btn btn-warning" href="{% url 'investor:deposit_money' %}">Add Money</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

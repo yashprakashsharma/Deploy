@@ -1,0 +1,80 @@
+{% extends "base_investor.html" %}
+{% block content %}
+  <div class="container mt-3 p-2 rounded shadow-lg text-center fixed-length">
+
+    <h2>ICO Details</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Crop:</strong> {{ ico.crop }}</p>
+            <p><strong>Land Area:</strong> {{ ico.land_area }} sq. meters</p>
+            <p><strong>Capital:</strong> {{ ico.capital }} Rs</p>
+            <p><strong>Quantity:</strong> {{ ico.quantity }}</p>
+            <p><strong>Stock Available:</strong> {{ ico.stock_available }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Sold Quantity:</strong> {{ ico.sold_quantity }}</p>
+            <p><strong>Created At:</strong> {{ ico.created_at|date:"Y-m-d" }}</p>
+            <p><strong>Closes On:</strong> {{ ico.closes_on|date:"Y-m-d" }}</p>
+            <p><strong>Return Date:</strong> {{ ico.return_date|date:"Y-m-d" }}</p>
+        </div>
+    </div>
+
+
+    {% if history %}
+    <div class="row mt-3">
+        <h4>{{ ico.farmer.user.first_name }}'s Farming History</h4>
+        <div class="col-md-8 mx-auto">
+            <table class="table table-bordered">
+                <thead>
+                    <tr style="background-color: rgb(255, 226, 9)">
+                        <th>Season</th>
+                        <th>Year</th>
+                        <th>Crop</th>
+                        <th>Area Cultivated(sq. meters)</th>
+                        <th>Revenue(&#8377;)</th>
+                        <th>Expenses(&#8377;)</th>
+                        <th>Profit/Loss(%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for history_entry in history %}
+                        <tr>
+                            <td>{{ history_entry.season }}</td>
+                            <td>{{ history_entry.year }}</td>
+                            <td>{{ history_entry.crop }}</td>
+                            <td>{{ history_entry.area_cultivated }}</td>
+                            <td>{{ history_entry.revenue }}</td>
+                            <td>{{ history_entry.expenses }}</td>
+                            {% if history_entry.revenue > history_entry.expenses %}
+                                <td style="background-color: rgb(121, 222, 121)">
+                                    {{ history_entry.percentage|floatformat:2 }}
+                                </td>
+                            {% else %}
+                                <td style="background-color: rgb(239, 91, 91)">
+                                    {{ history_entry.percentage|floatformat:2 }}
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    {% if ico.status == "Open" and ico.stock_available > 0 %}
+    <div class="row mt-3">
+        <div class="col-md-4 mx-auto">
+            <a class="btn btn-success btn-lg btn-block" href="{% url 'investor:buy_ico' ico.id %}">Buy ICO</a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if ico.status == "Closed" and ico.is_return_provided == False %}
+    <div class="alert alert-danger mt-3 text-center" role="alert">
+        Don't worry! We are communicating with farmer to resolve the issue, we are aware you didn't recieve your return.
+    </div>
+    {% endif %}
+
+  </div>
+{% endblock %}

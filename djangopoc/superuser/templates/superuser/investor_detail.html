@@ -1,0 +1,56 @@
+{% extends "base_superuser.html" %}
+{% block content %}
+  <div class="container mt-3 p-2 mb-2 rounded shadow-lg text-center fixed-length">
+
+    <h2>Investor Details</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Name:</strong> {{ investor.user.first_name }}</p>
+            <p><strong>UserName:</strong> {{ investor.user.username }}</p>
+            <p><strong>Email:</strong> {{ investor.user.email }}</p>
+            <p><strong>Documents:</strong> <a href="{{ investor.documents.url }}" target="_blank">view documents</a></p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Aadhar No:</strong> {{ investor.aadhar_number }}</p>
+            <p><strong>PAN No:</strong> {{ investor.pan_number }}</p>
+            <p><strong>Contact No:</strong> {{ investor.user.phone }}</p>
+        </div>
+    </div>
+
+    {% if investor.is_verified == False and investor.is_rejected == False %}
+    <div class="row mt-3">
+        <div class="col-md-4 mx-auto">
+            <a class="btn btn-success btn-block" href="{% url 'superuser:approve_investor' investor.user.id %}">Approve Investor</a>
+        </div>
+        <div class="col-md-4 mx-auto">
+            <button class="btn btn-danger btn-block" data-toggle="modal" data-target="#myModal">Reject Investor</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Reject Investor</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Your form goes here -->
+                    <form method="post" action="{% url 'superuser:reject_investor' investor.user.id %}">
+                        {% csrf_token %}
+                        <!-- Add your form fields here -->
+                        {{ form.as_p }}
+                        <!-- Add more form fields as needed -->
+                        <button type="submit" class="btn btn-success mt-3">Reject Investor</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+  </div>
+{% endblock %}

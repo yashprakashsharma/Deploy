@@ -1,0 +1,121 @@
+{% extends "base_investor.html" %}
+{% block content %}
+  <div class="container mt-3">
+    <div class="row">
+    <div class="col-md-3 shadow-md rounded bg-light" style="max-height: 420px;">
+        <div class="row mt-3 mb-3">
+             <!-- Filter Form -->
+        <form method="get" action="{% url 'investor:show_icos' %}" class="mb-3">
+            <div class="mb-2">
+              <label for="crop_name">Crop Name:</label>
+              <input type="text" name="crop_name" class="form-control" id="crop_name" value="{{ request.GET.crop_name }}">
+            </div>
+            <div class="mb-2">
+                <label for="farmer_name">Farmer Name:</label>
+                <input type="text" name="farmer_name" class="form-control" id="farmer_name" value="{{ request.GET.farmer_name }}">
+              </div>
+            <div class="mb-2">
+              <label for="max_price">Max Price:</label>
+              <input type="number" name="max_price" class="form-control" id="max_price" value="{{ request.GET.max_price }}" min="50">
+            </div>
+            <!-- <div class="mb-2">
+              <label for="min_price">Min Price:</label>
+              <input type="number" name="min_price" class="form-control" id="min_price" value="{{ request.GET.min_price }}" min="1">
+            </div> -->
+            <div class="mb-2">
+              <label for="close_date">Closes By:</label>
+              <input type="date" name="close_date" class="form-control" id="close_date" value="{{ request.GET.close_date }}">
+            </div>
+            <div class="mb-2">
+                <label for="return_date">Return By:</label>
+                <input type="date" name="return_date" class="form-control" id="return_date" value="{{ request.GET.return_date }}">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-secondary">Apply Filter</button>
+            </div>
+          </form>
+        </div>
+    </div>
+    <div class="col-md-9">
+    {% if icos %}
+    {% for ico in icos %}
+      <div class="card mb-4">
+        <div class="row ">
+            <div class="col-md-4">
+                <img src="https://images.unsplash.com/photo-1564417947365-8dbc9d0e718e?w=200&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y3JvcHxlbnwwfHwwfHx8MA%3D%3D" class="card-img-top" alt="crop" style="width: px; height: 200px; object-fit: cover;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h4 class="card-title">{{ ico.crop }}</h4>
+                    <div class="row">
+                        <div class="col-md-6 card-text">
+                            <strong>Price: </strong>{{ ico.price|floatformat:2 }} &#8377;<br>
+                            <strong>Closes On: </strong>{{ ico.closes_on|date:"Y-m-d" }}<br>
+                            <strong>Farmer Name: </strong>{{ ico.farmer.user.first_name }}
+                        </div>
+                        <div class="col-md-6 card-text">
+                            <strong>Stocks Available: </strong>{{ ico.stock_available }}<br>
+                            <strong>Return Date: </strong>{{ ico.return_date|date:"Y-m-d" }} 
+                            <!-- Add more attributes here -->
+                        </div>
+                    </div>
+                    <!-- <a href="#" class="btn btn-primary mt-3">Show Details</a> -->
+                    <!-- Pass the ICO details directly to the details template using the URL -->
+                    <div class="row">
+                        <div class="col-md-6"><a href="{% url 'investor:ico_details' ico.id %}" class="btn btn-success mt-3">Show Details</a></div>
+                        <div class="col-md-6"><a href="{% url 'investor:buy_ico' ico.id %}" class="btn btn-warning mt-3">Buy ICO</a></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </div>
+    {% endfor %}
+    <!-- Pagination links -->
+    <div class="pagination mt-3" style="justify-content: center;">
+        <span class="step-links">
+            {% if icos.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ icos.previous_page_number }}">previous</a>
+            {% endif %}
+        
+            <span class="current">
+                Page {{ icos.number }} of {{ icos.paginator.num_pages }}.
+            </span>
+          
+            {% if icos.has_next %}
+                <a href="?page={{ icos.next_page_number }}">next</a>
+                <a href="?page={{ icos.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+      </div>
+    {% else %}
+    <div class="alert alert-info mt-3 text-center" role="alert">
+        No such ICOs found!
+    </div>
+    {% endif %}
+    </div>
+    </div>
+
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var today = new Date();
+        var minDate = new Date(today);
+        var maxDate = new Date(today);
+        minDate.setDate(today.getDate()); // 10 days in future
+        maxDate.setDate(today.getDate() + 20);  // 20 days in the future
+
+        var closesOnInput = document.querySelector('#close_date');
+        closesOnInput.min = minDate.toISOString().split('T')[0];  // Set min attribute
+        closesOnInput.max = maxDate.toISOString().split('T')[0];  // Set max attribute
+
+        var minDate2 = new Date(today);
+        var maxDate2 = new Date(today);
+        minDate2.setDate(today.getDate()+30); // 90 days in future
+        maxDate2.setDate(today.getDate() + 120);  // 120 days in the future
+        var closesOnInput2 = document.querySelector('#return_date');
+        closesOnInput2.min = minDate2.toISOString().split('T')[0];  // Set min attribute
+        closesOnInput2.max = maxDate2.toISOString().split('T')[0];  // Set max attribute
+    });
+</script>
+{% endblock %}

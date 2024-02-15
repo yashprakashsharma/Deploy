@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+        <div class="container" style="max-width: 400px;">
+        <div class="card custom-light-green-bg mt-4 mb-4">
+            <div class="card-body">
+            <h2>Farmer Registeration</h2>
+            <!-- <form method="post" action="{% url 'register_farmer' %}">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button class="btn btn-primary" type="submit">Register</button>
+            </form>         -->
+            <form method="post" action="{% url 'register_farmer' %}" enctype="multipart/form-data">
+              {% csrf_token %}
+          
+              <div class="form-group {% if form.aadhar_number.errors %}has-error{% endif %} mb-2">
+                  {{ form.aadhar_number.label_tag }}
+                  {{ form.aadhar_number }}
+                  {% if form.aadhar_number.errors %}
+                      <div class="text-danger">
+                          {% for error in form.aadhar_number.errors %}
+                              {{ error }}
+                          {% endfor %}
+                      </div>
+                  {% endif %}
+              </div>
+          
+              <div class="form-group {% if form.pan_number.errors %}has-error{% endif %} mb-2">
+                  {{ form.pan_number.label_tag }}
+                  {{ form.pan_number }}
+                  {% if form.pan_number.errors %}
+                      <div class="text-danger">
+                          {% for error in form.pan_number.errors %}
+                              {{ error }}
+                          {% endfor %}
+                      </div>
+                  {% endif %}
+              </div>
+          
+              <div class="form-group {% if form.land_area.errors %}has-error{% endif %} mb-2">
+                  {{ form.land_area.label_tag }}
+                  {{ form.land_area }}
+                  {% if form.land_area.errors %}
+                      <div class="text-danger">
+                          {% for error in form.land_area.errors %}
+                              {{ error }}
+                          {% endfor %}
+                      </div>
+                  {% endif %}
+              </div>
+
+              <div class="form-group {% if form.documents.errors %}has-error{% endif %} mb-2">
+                {{ form.documents.label_tag }}
+                {{ form.documents }}
+                {% if form.documents.errors %}
+                    <div class="text-danger">
+                        {% for error in form.documents.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                </div>
+          
+              <!-- Add other fields as needed -->
+          
+              <button class="btn btn-primary" type="submit">Register</button>
+            </form>          
+            </div>
+        </div>
+        </div>
+{% endblock %}
