@@ -14,7 +14,7 @@ from .decorators import login_and_farmer_required, login_and_investor_required, 
 import secrets
 
 class SignUpView(View):
-    template_name = 'core\signup.html'
+    template_name = 'core/signup.html'
 
     def get(self, request):
         form = CustomUserCreationForm()
