@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  django_app:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - static_vol:/app/core/static
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_vol:/app/core/static
+    ports:
+      - "80:80"
+    depends_on:
+      - django_app
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: pocdb
+      POSTGRES_USER: yash      # Change if needed
+      POSTGRES_PASSWORD: Yash1234  # Change to a strong password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  static_vol:
+  postgres_data:
